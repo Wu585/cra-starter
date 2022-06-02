@@ -69,7 +69,7 @@ export const useAsync = <T,>(
         return data;
       })
       .catch((error) => {
-        setError(error);
+        setError(error as Error);
         if (config.throwOnError) {
           return Promise.reject(error);
         }
