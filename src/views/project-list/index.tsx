@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "../../hooks";
@@ -6,12 +6,10 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "../../hooks/project";
 import { useUsers } from "../../hooks/user";
+import { useUrlQueryParam } from "../../hooks/url";
 
 const ProjectListScreen = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
   const debouncedParam = useDebounce(param);
   const { isLoading, error, data: list } = useProject(debouncedParam);
   const { data: users } = useUsers();
@@ -29,6 +27,8 @@ const ProjectListScreen = () => {
     </Container>
   );
 };
+
+ProjectListScreen.whyDidYouRender = false;
 
 export default ProjectListScreen;
 
