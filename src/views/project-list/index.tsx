@@ -6,10 +6,10 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "../../hooks/project";
 import { useUsers } from "../../hooks/user";
-import { useUrlQueryParam } from "../../hooks/url";
+import { useProjectsSearchParams } from "./util";
 
 const ProjectListScreen = () => {
-  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
+  const [param, setParam] = useProjectsSearchParams();
   const debouncedParam = useDebounce(param);
   const { isLoading, error, data: list } = useProject(debouncedParam);
   const { data: users } = useUsers();
