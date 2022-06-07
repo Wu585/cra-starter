@@ -45,6 +45,7 @@ export const useAsync = <T,>(
     ...defaultInitialState,
     ...initialState,
   });
+  const mountedRef = useMountedRef();
   const setData = (data: T) => {
     setState({
       data,
@@ -74,7 +75,9 @@ export const useAsync = <T,>(
     setState({ ...state, stat: "loading" });
     return promise
       .then((data) => {
-        setData(data);
+        if (mountedRef.current) {
+          setData(data);
+        }
         return data;
       })
       .catch((error) => {
@@ -125,4 +128,15 @@ export const useDocumentTitle = (title: string, keepOnUnmount = true) => {
       }
     };
   }, [keepOnUnmount, oldTitle]);
+};
+
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+  return mountedRef;
 };
