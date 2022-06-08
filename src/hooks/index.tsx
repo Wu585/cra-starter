@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 
 export const useMount = (callback: () => void) => {
   useEffect(() => {
@@ -45,6 +45,7 @@ export const useAsync = <T,>(
     ...defaultInitialState,
     ...initialState,
   });
+
   const mountedRef = useMountedRef();
   const setData = useCallback((data: T) => {
     setState({

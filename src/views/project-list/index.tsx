@@ -3,15 +3,13 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "../../hooks";
 import styled from "@emotion/styled";
-import { Button, Typography } from "antd";
+import { Typography } from "antd";
 import { useProject } from "../../hooks/project";
 import { useUsers } from "../../hooks/user";
 import { useProjectsSearchParams } from "./util";
 import { Row } from "../../components/lib";
 
-const ProjectListScreen = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
   const [param, setParam] = useProjectsSearchParams();
   const debouncedParam = useDebounce(param);
   const { isLoading, error, data: list, retry } = useProject(debouncedParam);
@@ -23,9 +21,7 @@ const ProjectListScreen = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModalOpen(true)}>
-          创建项目
-        </Button>
+        {props.projectButton}
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
@@ -36,7 +32,7 @@ const ProjectListScreen = (props: {
         users={users || []}
         dataSource={list || []}
         loading={isLoading}
-        setProjectModalOpen={props.setProjectModalOpen}
+        projectButton={props.projectButton}
       />
     </Container>
   );
